@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matrix Cyberpunk Calculator</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet"/>
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  background:black;
+  perspective:1000px;
+}
+
+/* Matrix Canvas */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+
+/* 3D Floating Card */
+.floating-card{
+  transform-style:preserve-3d;
+  transform: rotateX(8deg) rotateY(-8deg);
+  transition:0.5s;
+}
+.floating-card:hover{
+  transform: rotateX(0deg) rotateY(0deg) scale(1.03);
+}
+
+/* Neon effect */
+.neon{
+  box-shadow:0 0 15px #00ffcc, 0 0 30px #ff00ff;
+}
+
+.operator-btn{
+  font-size:24px;
+  font-weight:900;
+  padding:15px;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.3s;
+  text-align:center;
+}
+.operator-btn:hover{
+  transform:scale(1.1);
+}
+
+/* Result */
+.result-number{
+  font-size:45px;
+  font-weight:900;
+  color:#00ffcc;
+  text-shadow:0 0 10px #00ffcc,0 0 25px #00ffcc;
+}
+</style>
+</head>
+
+<body class="flex items-center justify-center h-screen">
+
+<canvas id="matrix"></canvas>
+
+<div class="floating-card bg-black/70 backdrop-blur-xl p-8 rounded-2xl neon w-full max-w-md text-white">
+
+<h1 class="text-3xl font-bold text-center mb-6 text-green-400">
+⚡ MATRIX CYBER CALCULATOR
+</h1>
+
+<input id="angka1" type="number" placeholder="Angka Pertama"
+class="input input-bordered w-full mb-4 bg-black/50 text-green-400">
+
+<!-- OPERATOR BUTTONS -->
+<div class="grid grid-cols-2 gap-3 mb-4">
+
+<div onclick="setOperator('+')" class="operator-btn bg-green-600 neon">
++ <div class="text-sm font-normal">Penjumlahan</div>
+</div>
+
+<div onclick="setOperator('-')" class="operator-btn bg-pink-600 neon">
+− <div class="text-sm font-normal">Pengurangan</div>
+</div>
+
+<div onclick="setOperator('*')" class="operator-btn bg-cyan-600 neon">
+× <div class="text-sm font-normal">Perkalian</div>
+</div>
+
+<div onclick="setOperator('/')" class="operator-btn bg-purple-600 neon">
+÷ <div class="text-sm font-normal">Pembagian</div>
+</div>
+
+</div>
+
+<input id="angka2" type="number" placeholder="Angka Kedua"
+class="input input-bordered w-full mb-4 bg-black/50 text-green-400">
+
+<button onclick="hitung()" 
+class="btn w-full bg-gradient-to-r from-green-400 to-cyan-500 border-0">
+HITUNG
+</button>
+
+<div id="hasil" class="text-center mt-6"></div>
+
+</div>
+
+<script>
+let operator="";
+
+// Set operator
+function setOperator(op){
+  operator=op;
+  playSound();
+}
+
+// Sound
+function playSound(){
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const osc=ctx.createOscillator();
+  osc.type="sine";
+  osc.frequency.setValueAtTime(700,ctx.currentTime);
+  osc.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime+0.1);
+}
+
+// Hitung
+function hitung(){
+let a=parseFloat(document.getElementById("angka1").value);
+let b=parseFloat(document.getElementById("angka2").value);
+
+if(isNaN(a)||isNaN(b)||operator===""){
+  alert("Lengkapi input dan pilih operator!");
+  return;
+}
+
+let result;
+
+switch(operator){
+  case "+": result=a+b; break;
+  case "-": result=a-b; break;
+  case "*": result=a*b; break;
+  case "/":
+    if(b===0){
+      alert("Tidak bisa dibagi 0!");
+      return;
+    }
+    result=a/b; break;
+}
+
+animateResult(result);
+}
+
+// Counting Animation
+function animateResult(finalValue){
+const container=document.getElementById("hasil");
+container.innerHTML=`<div class="result-number" id="counter">0</div>`;
+
+let current=0;
+let increment=finalValue/50;
+
+let counter=setInterval(()=>{
+  current+=increment;
+
+  if((increment>0 && current>=finalValue) ||
+     (increment<0 && current<=finalValue)){
+    current=finalValue;
+    clearInterval(counter);
+  }
+
+  document.getElementById("counter").innerText=
+  Number.isInteger(finalValue)?
+  Math.round(current):
+  current.toFixed(2);
+
+},20);
+}
+
+/* MATRIX RAIN EFFECT */
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+canvas.height=window.innerHeight;
+canvas.width=window.innerWidth;
+
+let letters="01アカサタナハマヤラワ";
+letters=letters.split("");
+
+let fontSize=14;
+let columns=canvas.width/fontSize;
+let drops=[];
+
+for(let i=0;i<columns;i++){
+  drops[i]=1;
+}
+
+function draw(){
+  ctx.fillStyle="rgba(0,0,0,0.05)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="#0f0";
+  ctx.font=fontSize+"px monospace";
+
+  for(let i=0;i<drops.length;i++){
+    let text=letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+    if(drops[i]*fontSize>canvas.height && Math.random()>0.975){
+      drops[i]=0;
+    }
+    drops[i]++;
+  }
+}
+
+setInterval(draw,33);
+</script>
+
+</body>
+</html>

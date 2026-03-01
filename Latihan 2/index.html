@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Kalkulator AI Futuristic</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet"/>
+
+<style>
+body {
+  background: radial-gradient(circle at top left, #0f172a, #020617);
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+/* Animated Grid */
+body::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image:
+    linear-gradient(rgba(0,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,255,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: moveGrid 15s linear infinite;
+}
+
+@keyframes moveGrid {
+  from { transform: translate(0,0); }
+  to { transform: translate(-40px,-40px); }
+}
+
+/* Floating Light */
+body::after {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(34,211,238,0.15), transparent 70%);
+  top: -200px;
+  left: -200px;
+  animation: floatLight 10s infinite alternate ease-in-out;
+}
+
+@keyframes floatLight {
+  from { transform: translate(0,0); }
+  to { transform: translate(200px,200px); }
+}
+
+/* Animated Border */
+.glass-wrapper {
+  padding: 2px;
+  border-radius: 24px;
+  background: linear-gradient(45deg, #22d3ee, #06b6d4, #0ea5e9, #22d3ee);
+  background-size: 300% 300%;
+  animation: borderMove 6s linear infinite;
+}
+
+@keyframes borderMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+.glass {
+  backdrop-filter: blur(20px);
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 22px;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease;
+}
+
+/* Input Glow */
+.input-glow {
+  transition: 0.3s ease;
+}
+
+.input-glow:hover,
+.input-glow:focus {
+  box-shadow: 0 0 8px #22d3ee,
+              0 0 18px #06b6d4;
+  border-color: #22d3ee !important;
+}
+
+/* Glow Result */
+.glow:hover {
+  text-shadow: 0 0 10px #22d3ee, 0 0 20px #06b6d4;
+  transform: scale(1.05);
+}
+
+/* Fade Up */
+.fade-up {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.5s forwards;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Neon Pulse */
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { text-shadow: 0 0 8px #22d3ee; }
+  50% { text-shadow: 0 0 20px #06b6d4; }
+}
+</style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center text-white relative">
+
+<div class="glass-wrapper z-10">
+<div id="card" class="glass p-8 w-[400px]">
+
+<h2 class="text-2xl font-bold text-center mb-6 text-cyan-400 tracking-wider pulse">
+⚡ Kalkulator Futuristic
+</h2>
+
+<input type="number" id="angka1"
+class="input input-bordered input-glow w-full text-black mb-4"
+placeholder="Masukkan angka pertama"/>
+
+<input type="number" id="angka2"
+class="input input-bordered input-glow w-full text-black mb-4"
+placeholder="Masukkan angka kedua"/>
+
+<button onclick="hitung()"
+class="btn w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold border-none mb-6">
+Hitung 🚀
+</button>
+
+<div id="hasil" class="space-y-3 text-sm"></div>
+
+</div>
+</div>
+
+<script>
+
+const input1 = document.getElementById("angka1");
+const input2 = document.getElementById("angka2");
+
+input1.addEventListener("keydown", e => {
+  if (e.key === "Enter") input2.focus();
+});
+
+input2.addEventListener("keydown", e => {
+  if (e.key === "Enter") hitung();
+});
+
+/* Format angka pintar */
+function formatNumber(num) {
+  if (Number.isInteger(num)) {
+    return num;
+  } else {
+    return parseFloat(num.toFixed(6)); // batasi desimal biar rapi
+  }
+}
+
+/* Smooth Counting */
+function animateValue(element, end, duration) {
+  let start = 0;
+  let startTime = null;
+
+  function animation(currentTime) {
+    if (!startTime) startTime = currentTime;
+    const progress = Math.min((currentTime - startTime) / duration, 1);
+    const current = start + (end - start) * progress;
+
+    element.textContent = formatNumber(current);
+
+    if (progress < 1) {
+      requestAnimationFrame(animation);
+    }
+  }
+  requestAnimationFrame(animation);
+}
+
+function hitung() {
+  const a = parseFloat(input1.value);
+  const b = parseFloat(input2.value);
+  const hasil = document.getElementById("hasil");
+
+  if (isNaN(a) || isNaN(b)) {
+    hasil.innerHTML = "<span class='text-red-400'>Masukkan 2 angka valid!</span>";
+    return;
+  }
+
+  const tambah = a + b;
+  const kurang = a - b;
+  const kali = a * b;
+  const bagi = b !== 0 ? a / b : null;
+
+  hasil.innerHTML = `
+    <div class="glow fade-up">➕ Penjumlahan: <span id="tambah"></span></div>
+    <div class="glow fade-up" style="animation-delay:0.1s">➖ Pengurangan: <span id="kurang"></span></div>
+    <div class="glow fade-up" style="animation-delay:0.2s">✖ Perkalian: <span id="kali"></span></div>
+    <div class="glow fade-up" style="animation-delay:0.3s">➗ Pembagian: <span id="bagi"></span></div>
+  `;
+
+  setTimeout(() => {
+    animateValue(document.getElementById("tambah"), tambah, 800);
+    animateValue(document.getElementById("kurang"), kurang, 800);
+    animateValue(document.getElementById("kali"), kali, 800);
+
+    if (bagi !== null) {
+      animateValue(document.getElementById("bagi"), bagi, 800);
+    } else {
+      document.getElementById("bagi").textContent = "Tidak bisa bagi 0";
+    }
+  }, 200);
+}
+
+/* 3D Tilt */
+const card = document.getElementById("card");
+
+card.addEventListener("mousemove", (e) => {
+  const rect = card.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+
+  const rotateX = -(y - centerY) / 20;
+  const rotateY = (x - centerX) / 20;
+
+  card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+});
+
+card.addEventListener("mouseleave", () => {
+  card.style.transform = "rotateX(0) rotateY(0)";
+});
+
+</script>
+
+</body>
+</html>

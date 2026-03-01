@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Penilaian Mahasiswa</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+  background: linear-gradient(135deg,#e0f2fe,#ffffff,#fff7ed);
+  background-size:400% 400%;
+  animation: bgMove 12s ease infinite;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+.input-style{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #cbd5e1;
+  outline:none;
+  transition:0.3s;
+}
+.input-style:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 10px rgba(37,99,235,0.5);
+}
+
+.card-glass{
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.7);
+  border-radius:20px;
+  padding:30px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.status-lulus{
+  color:#16a34a;
+  font-weight:900;
+  font-size:28px;
+  animation: glowGreen 1.5s infinite alternate;
+}
+
+.status-tidak{
+  color:#dc2626;
+  font-weight:900;
+  font-size:28px;
+  animation: glowRed 1.5s infinite alternate;
+}
+
+@keyframes glowGreen{
+  from{ text-shadow:0 0 5px #22c55e; }
+  to{ text-shadow:0 0 20px #16a34a; }
+}
+
+@keyframes glowRed{
+  from{ text-shadow:0 0 5px #ef4444; }
+  to{ text-shadow:0 0 20px #dc2626; }
+}
+
+.highlight-box{
+  padding:15px;
+  border-radius:12px;
+  margin-top:10px;
+  animation: pop 0.5s ease;
+}
+
+@keyframes pop{
+  from{transform:scale(0.9); opacity:0;}
+  to{transform:scale(1); opacity:1;}
+}
+</style>
+</head>
+
+<body class="p-8">
+
+<div class="max-w-4xl mx-auto card-glass">
+
+<h1 class="text-3xl font-bold text-blue-800 mb-6 text-center">
+SISTEM PENILAIAN MAHASISWA
+</h1>
+
+<div class="grid md:grid-cols-2 gap-4">
+
+<input class="input-style" id="nama" placeholder="Nama Mahasiswa">
+<input class="input-style" id="npm" placeholder="NPM">
+
+<select class="input-style" id="fakultas"></select>
+<select class="input-style" id="jurusan"></select>
+
+<select class="input-style" id="semester"></select>
+<select class="input-style" id="kelas">
+<option value="">Pilih Kelas</option>
+<option>A</option><option>B</option>
+<option>C</option><option>D</option>
+<option>E</option>
+</select>
+
+<input class="input-style" id="matkul" placeholder="Mata Kuliah">
+<input class="input-style" id="nilai" type="number" placeholder="Nilai (0-100)">
+</div>
+
+<button onclick="hitung()" 
+class="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition">
+Hasil
+</button>
+
+<div id="output" class="mt-6"></div>
+
+</div>
+
+<script>
+
+// ===== DATA FAKULTAS & JURUSAN =====
+const dataFakultas = {
+  "Fakultas Ilmu Komputer":[
+    "Teknik Informatika",
+    "Sistem Informasi",
+    "Teknologi Informasi"
+  ],
+  "Fakultas Hukum":[
+    "Ilmu Hukum"
+  ],
+  "Fakultas Ekonomi":[
+    "Manajemen",
+    "Akuntansi"
+  ]
+};
+
+const fakultasSelect = document.getElementById("fakultas");
+const jurusanSelect = document.getElementById("jurusan");
+
+// isi fakultas
+fakultasSelect.innerHTML = '<option value="">Pilih Fakultas</option>';
+for(let f in dataFakultas){
+  fakultasSelect.innerHTML += `<option>${f}</option>`;
+}
+
+// isi jurusan sesuai fakultas
+fakultasSelect.addEventListener("change", function(){
+  jurusanSelect.innerHTML = '<option value="">Pilih Jurusan</option>';
+  if(dataFakultas[this.value]){
+    dataFakultas[this.value].forEach(j=>{
+      jurusanSelect.innerHTML += `<option>${j}</option>`;
+    });
+  }
+});
+
+// semester 1-8
+const semesterSelect = document.getElementById("semester");
+semesterSelect.innerHTML = '<option value="">Pilih Semester</option>';
+for(let i=1;i<=8;i++){
+  semesterSelect.innerHTML += `<option>${i}</option>`;
+}
+
+// ===== AUTO ENTER PINDAH FIELD =====
+const inputs = document.querySelectorAll("input, select");
+inputs.forEach((input, index)=>{
+  input.addEventListener("keypress", function(e){
+    if(e.key==="Enter"){
+      e.preventDefault();
+      if(inputs[index+1]){
+        inputs[index+1].focus();
+      }
+    }
+  });
+});
+
+// ===== LOGIKA NILAI MAJEMUK =====
+function hitung(){
+
+let nilai = parseFloat(document.getElementById("nilai").value);
+if(isNaN(nilai)){
+  alert("Masukkan nilai!");
+  return;
+}
+
+let grade="", ket="";
+
+if(nilai>=85){
+  grade="A";
+  ket="Sangat Baik";
+}else if(nilai>=75){
+  grade="B";
+  ket="Baik";
+}else if(nilai>=65){
+  grade="C";
+  ket="Cukup";
+}else if(nilai>=50){
+  grade="D";
+  ket="Kurang";
+}else{
+  grade="E";
+  ket="Sangat Kurang";
+}
+
+let statusHTML="";
+if(nilai>=75){
+  statusHTML = `<div class="highlight-box bg-green-100 border border-green-300 text-center">
+    <div class="status-lulus">LULUS</div>
+  </div>`;
+}else{
+  statusHTML = `<div class="highlight-box bg-red-100 border border-red-300 text-center">
+    <div class="status-tidak">TIDAK LULUS</div>
+  </div>`;
+}
+
+document.getElementById("output").innerHTML=`
+<div class="mt-4 p-6 bg-white rounded-xl shadow-lg">
+<p><b>Nama:</b> ${nama.value}</p>
+<p><b>NPM:</b> ${npm.value}</p>
+<p><b>Fakultas:</b> ${fakultas.value}</p>
+<p><b>Jurusan:</b> ${jurusan.value}</p>
+<p><b>Semester:</b> ${semester.value}</p>
+<p><b>Kelas:</b> ${kelas.value}</p>
+<p><b>Mata Kuliah:</b> ${matkul.value}</p>
+<hr class="my-3">
+<p><b>Nilai Angka:</b> ${nilai}</p>
+<p><b>Grade:</b> ${grade}</p>
+<p><b>Keterangan:</b> ${ket}</p>
+${statusHTML}
+</div>
+`;
+}
+
+</script>
+</body>
+</html>
