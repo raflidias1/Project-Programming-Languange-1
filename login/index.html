@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Programming Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css" rel="stylesheet" />
+
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-orange-100">
+
+  <div class="card w-96 bg-white shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title justify-center text-2xl">🔐 Login Sistem</h2>
+
+      <input id="username" type="text" placeholder="Username"
+        class="input input-bordered w-full" />
+
+      <input id="password" type="password" placeholder="Password"
+        class="input input-bordered w-full" />
+
+      <button onclick="login()"
+        class="btn btn-primary w-full mt-2">
+        Login
+      </button>
+
+      <p id="error" class="text-red-500 text-sm text-center mt-2"></p>
+    </div>
+  </div>
+
+<script>
+function login() {
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+
+  // MULTI USER (lebih keren)
+  const users = [
+    { username: "mahasiswa", password: "unbin" },
+    { username: "mahasiswa", password: "unbin" },
+    { username: "rafly", password: "dias" }
+  ];
+
+  const validUser = users.find(u => u.username === user && u.password === pass);
+
+  if (validUser) {
+    localStorage.setItem("isLogin", "true");
+    localStorage.setItem("username", user);
+    window.location.href = "../index.html";
+  } else {
+    document.getElementById("error").innerText =
+      "Username atau Password salah!";
+  }
+}
+</script>
+
+</body>
+</html>
