@@ -62,3 +62,10 @@ input:focus {
   position: relative;
   overflow: hidden;
 }
+
+/* Perbaikan mobile */
+@media (max-width:768px){
+  body{
+    background-attachment: scroll;
+  }
+}

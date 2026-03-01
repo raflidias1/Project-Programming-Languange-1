@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Kalkulator AI Futuristic</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet"/>
 
@@ -112,10 +114,10 @@ body::after {
 </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center text-white relative">
+<body class="min-h-screen flex items-center justify-center text-white relative p-4">
 
 <div class="glass-wrapper z-10">
-<div id="card" class="glass p-8 w-[400px]">
+<div id="card" class="glass p-8 w-[90%] max-w-[400px]">
 
 <h2 class="text-2xl font-bold text-center mb-6 text-cyan-400 tracking-wider pulse">
 ⚡ Kalkulator Futuristic
@@ -157,7 +159,7 @@ function formatNumber(num) {
   if (Number.isInteger(num)) {
     return num;
   } else {
-    return parseFloat(num.toFixed(6)); // batasi desimal biar rapi
+    return parseFloat(num.toFixed(6));
   }
 }
 

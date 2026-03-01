@@ -12,6 +12,10 @@ body{
   background: linear-gradient(135deg,#e0f2fe,#ffffff,#fff7ed);
   background-size:400% 400%;
   animation: bgMove 12s ease infinite;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 @keyframes bgMove{
   0%{background-position:0% 50%;}
@@ -39,6 +43,8 @@ body{
   padding:30px;
   box-shadow:0 10px 30px rgba(0,0,0,0.1);
   animation: fadeIn 1s ease;
+  width:100%;
+  max-width:900px;
 }
 
 @keyframes fadeIn{
@@ -84,13 +90,17 @@ body{
 </style>
 </head>
 
-<body class="p-8">
+<body>
 
-<div class="max-w-4xl mx-auto card-glass">
+<!-- WRAPPER UTAMA -->
+<div id="mainCard" class="card-glass">
 
 <h1 class="text-3xl font-bold text-blue-800 mb-6 text-center">
 SISTEM PENILAIAN MAHASISWA
 </h1>
+
+<!-- FORM SECTION -->
+<div id="formSection">
 
 <div class="grid md:grid-cols-2 gap-4">
 
@@ -117,7 +127,10 @@ class="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 tran
 Hasil
 </button>
 
-<div id="output" class="mt-6"></div>
+</div>
+
+<!-- OUTPUT SECTION -->
+<div id="outputSection" class="hidden mt-6"></div>
 
 </div>
 
@@ -178,7 +191,7 @@ inputs.forEach((input, index)=>{
   });
 });
 
-// ===== LOGIKA NILAI MAJEMUK =====
+// ===== LOGIKA NILAI =====
 function hitung(){
 
 let nilai = parseFloat(document.getElementById("nilai").value);
@@ -190,20 +203,15 @@ if(isNaN(nilai)){
 let grade="", ket="";
 
 if(nilai>=85){
-  grade="A";
-  ket="Sangat Baik";
+  grade="A"; ket="Sangat Baik";
 }else if(nilai>=75){
-  grade="B";
-  ket="Baik";
+  grade="B"; ket="Baik";
 }else if(nilai>=65){
-  grade="C";
-  ket="Cukup";
+  grade="C"; ket="Cukup";
 }else if(nilai>=50){
-  grade="D";
-  ket="Kurang";
+  grade="D"; ket="Kurang";
 }else{
-  grade="E";
-  ket="Sangat Kurang";
+  grade="E"; ket="Sangat Kurang";
 }
 
 let statusHTML="";
@@ -217,8 +225,15 @@ if(nilai>=75){
   </div>`;
 }
 
-document.getElementById("output").innerHTML=`
-<div class="mt-4 p-6 bg-white rounded-xl shadow-lg">
+// sembunyikan form
+document.getElementById("formSection").classList.add("hidden");
+
+// tampilkan hasil
+const outputSection = document.getElementById("outputSection");
+outputSection.classList.remove("hidden");
+
+outputSection.innerHTML=`
+<div class="p-6 bg-white rounded-xl shadow-lg">
 <p><b>Nama:</b> ${nama.value}</p>
 <p><b>NPM:</b> ${npm.value}</p>
 <p><b>Fakultas:</b> ${fakultas.value}</p>
@@ -231,6 +246,12 @@ document.getElementById("output").innerHTML=`
 <p><b>Grade:</b> ${grade}</p>
 <p><b>Keterangan:</b> ${ket}</p>
 ${statusHTML}
+
+<button onclick="location.reload()" 
+class="mt-6 w-full bg-gray-700 text-white py-2 rounded-xl hover:bg-gray-800">
+Input Ulang
+</button>
+
 </div>
 `;
 }
