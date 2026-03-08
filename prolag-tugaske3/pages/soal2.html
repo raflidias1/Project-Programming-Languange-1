@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>P2 | Distribusi Laptop</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">RAFLY<span>DIAS</span></a>
+        <div class="nav-links">
+            <a href="../index.html">Dashboard</a>
+            <a href="soal1.html">P1</a>
+            <a href="soal2.html" class="active">P2</a>
+            <a href="soal3.html">P3</a>
+            <a href="bonus.html">Bonus</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="program-card">
+            <div class="card-icon" style="color: var(--secondary);"><i class="fas fa-laptop-house"></i></div>
+            <h2>Distribusi Laptop</h2>
+            <p class="desc">Pembagian inventaris ke Laboratorium Komputer</p>
+
+            <div class="data-box">
+                <div class="data-row">
+                    <span class="label">Total Laptop</span>
+                    <span class="value">185 Unit</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Jumlah Lab</span>
+                    <span class="value highlight">7 Ruangan</span>
+                </div>
+            </div>
+
+            <button onclick="distribusi()">Jalankan Distribusi</button>
+            <div id="hasil" class="result-area"></div>
+        </div>
+    </main>
+
+    <script src="../js/soal2.js"></script>
+</body>
+</html>

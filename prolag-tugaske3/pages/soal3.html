@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>P3 | Syarat Kelulusan</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">RAFLY<span>DIAS</span></a>
+        <div class="nav-links">
+            <a href="../index.html">Dashboard</a>
+            <a href="soal1.html">P1</a>
+            <a href="soal2.html">P2</a>
+            <a href="soal3.html" class="active">P3</a>
+            <a href="bonus.html">Bonus</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="program-card">
+            <div class="card-icon" style="color: var(--success);"><i class="fas fa-user-graduate"></i></div>
+            <h2>Syarat Kelulusan</h2>
+            <p class="desc">Verifikasi kriteria mahasiswa Programming Language</p>
+
+            <div class="data-box">
+                <div class="data-row">
+                    <span class="label">Nilai UAS</span>
+                    <span class="value">72 (Min. 70)</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Nilai Tugas</span>
+                    <span class="value">68 (Min. 60)</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Kehadiran</span>
+                    <span class="value highlight">80% (Min. 75%)</span>
+                </div>
+            </div>
+
+            <button onclick="cekLulus()">Cek Status Kelulusan</button>
+            <div id="hasil" class="result-area"></div>
+        </div>
+    </main>
+
+    <script src="../js/soal3.js"></script>
+</body>
+</html>

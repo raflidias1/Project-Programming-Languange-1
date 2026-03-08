@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAFLYDIAS | Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="particles-js" class="particles-js"></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">RAFLY<span>DIAS</span></a>
+        <div class="nav-links">
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="pages/soal1.html">P1</a>
+            <a href="pages/soal2.html">P2</a>
+            <a href="pages/soal3.html">P3</a>
+            <a href="pages/bonus.html">Bonus</a>
+        </div>
+    </nav>
+
+    <main class="container" style="flex-direction: column; text-align: center;">
+        <div class="welcome-text" style="margin-bottom: 60px;">
+            <h1>Control Panel</h1>
+            <p class="desc">Pilih program algoritma yang ingin kamu jalankan.</p>
+        </div>
+
+        <div class="bento-grid">
+            <a href="pages/soal1.html" class="menu-card">
+                <div class="card-icon" style="color: var(--primary);"><i class="fas fa-gas-pump"></i></div>
+                <h3>Program 1</h3>
+                <span class="badge">Konsumsi BBM</span>
+            </a>
+            <a href="pages/soal2.html" class="menu-card">
+                <div class="card-icon" style="color: var(--secondary);"><i class="fas fa-laptop"></i></div>
+                <h3>Program 2</h3>
+                <span class="badge badge-indigo">Distribusi Laptop</span>
+            </a>
+            <a href="pages/soal3.html" class="menu-card">
+                <div class="card-icon" style="color: var(--success);"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Program 3</h3>
+                <span class="badge badge-emerald">Cek Kelulusan</span>
+            </a>
+            <a href="pages/bonus.html" class="menu-card">
+                <div class="card-icon" style="color: var(--accent);"><i class="fas fa-award"></i></div>
+                <h3>Bonus</h3>
+                <span class="badge badge-pink">Logic Boolean</span>
+            </a>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 60, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                opacity: { value: 0.1 },
+                size: { value: 2 },
+                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.1, width: 1 },
+                move: { enable: true, speed: 1.2 }
+            }
+        });
+    </script>
+</body>
+</html>
